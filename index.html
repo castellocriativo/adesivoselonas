@@ -1,0 +1,1137 @@
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adesivos/Lona</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0072BC, #00AEEF);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+        }
+
+        .logo {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .container, .result-container, .material-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .material-container {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container {
+            width: 450px;
+        }
+
+        .result-container {
+            width: 450px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2575fc;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 16px;
+            color: #2575fc;
+            margin: 10px 0 8px 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
+            color: #555;
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+
+        input[disabled] {
+            background-color: #f0f0f0;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .measurement-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .measurement-group {
+            flex: 1;
+        }
+
+        button {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+
+        .material-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .material-buttons button {
+            font-size: 14px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+
+        .material-buttons button.selected {
+            background: linear-gradient(135deg, #ff4081, #d81b60);
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2575fc;
+            border: 2px dashed #ddd;
+            line-height: 1.5;
+        }
+
+        .new-budget-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+        }
+
+        .new-budget-btn:hover {
+            background: linear-gradient(135deg, #45a049, #4caf50);
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #f57c00, #ff9800);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+        }
+
+        #ilhos_input {
+            display: none;
+            margin-top: 8px;
+        }
+
+        #arte_valor_input {
+            display: none;
+            margin-top: 8px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .valor-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #4caf50;
+            padding: 8px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .observacoes {
+            margin: 10px 0;
+            padding: 8px;
+            background: #fff8e1;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .checkbox-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 8px 0 15px 0;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .checkbox-option input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .checkbox-option .checkmark {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #2575fc;
+            border-radius: 50%;
+            margin-right: 6px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-option:hover .checkmark {
+            border-color: #6a11cb;
+        }
+
+        .checkbox-option input[type="radio"]:checked + .checkmark {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+
+        .checkbox-option input[type="radio"]:checked + .checkmark::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilos do painel de administração */
+        #adminOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(5px);
+        }
+
+        #adminPanel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: adminFadeIn 0.3s ease-out;
+        }
+
+        @keyframes adminFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        #adminPanel h2 {
+            color: #2575fc;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        #adminPanel h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #2575fc, #6a11cb);
+            border-radius: 3px;
+        }
+
+        .material-category {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #2575fc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .material-category h3 {
+            color: #6a11cb;
+            margin-bottom: 12px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .material-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .material-item label {
+            width: 120px;
+            margin: 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .material-item input[type="number"],
+        .material-item input[type="text"] {
+            width: 80px;
+            margin: 0;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .material-item input[type="checkbox"] {
+            margin-left: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #2575fc;
+        }
+
+        #adminBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        #adminBtn:hover {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            transform: scale(1.1);
+        }
+
+        .admin-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .admin-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+            max-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        #saveConfigBtn {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+
+        #saveConfigBtn:hover {
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        #closeAdminBtn {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+        }
+
+        #closeAdminBtn:hover {
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+        }
+
+        .admin-settings {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #6a11cb;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .admin-settings h3 {
+            color: #2575fc;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .setting-item label {
+            width: 150px;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .setting-item input {
+            width: 100px;
+            padding: 8px;
+            margin: 0;
+            font-size: 13px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .new-material-form {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #ff9800;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .new-material-form h3 {
+            color: #ff9800;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .checkbox-option-admin {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .checkbox-option-admin input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            accent-color: #2575fc;
+        }
+
+        .checkbox-option-admin label {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="adminOverlay"></div>
+    <div id="adminPanel">
+        <h2>Painel de Administração</h2>
+        <div id="materialEditor"></div>
+        <div class="admin-settings">
+            <h3>Acabamentos</h3>
+            <div class="setting-item">
+                <label>Recorte (por m²):</label>
+                <input type="number" id="recortePrice" step="0.001" min="0">
+            </div>
+            <div class="setting-item">
+                <label>Ilhós (por unidade):</label>
+                <input type="number" id="ilhosPrice" step="0.01" min="0">
+            </div>
+            <div class="setting-item">
+                <label>Bastão e Corda (fixo):</label>
+                <input type="number" id="bastaoCordaPrice" step="0.01" min="0">
+            </div>
+            <h3>Configurações Gerais</h3>
+            <div class="setting-item">
+                <label>Valor Mín. Arte (R$):</label>
+                <input type="number" id="arteMinValue" step="0.01" min="0">
+            </div>
+        </div>
+        <div class="new-material-form">
+            <h3>Novo Material</h3>
+            <div class="setting-item">
+                <label>Nome:</label>
+                <input type="text" id="newMaterialName" placeholder="Ex: Adesivo Especial">
+            </div>
+            <div class="setting-item">
+                <label>Preço por m² (R$):</label>
+                <input type="number" id="newMaterialPrice" step="0.01" min="0" placeholder="Ex: 75.00">
+            </div>
+            <div class="setting-item">
+                <label>Valor Mínimo (R$):</label>
+                <input type="number" id="newMaterialMinValue" step="0.01" min="0" placeholder="Ex: 30.00">
+            </div>
+            <div class="setting-item">
+                <label>Largura Máx. (cm):</label>
+                <input type="number" id="newMaterialMaxWidth" min="0" placeholder="Ex: 120">
+            </div>
+            <div class="setting-item">
+                <div class="checkbox-option-admin">
+                    <input type="checkbox" id="newMaterialBlockQuantity">
+                    <label for="newMaterialBlockQuantity">Bloquear quantidade</label>
+                </div>
+            </div>
+            <button onclick="addMaterial()" style="margin-top: 10px;">Adicionar Material</button>
+        </div>
+        <div class="admin-actions">
+            <button id="saveConfigBtn" onclick="saveConfig()">Salvar</button>
+            <button id="closeAdminBtn" onclick="hideAdminPanel()">Fechar</button>
+        </div>
+    </div>
+    <button id="adminBtn" onclick="showAdminPanel()">⚙️</button>
+    <header>
+        <img src="logohorizontal.png" alt="Logo da Empresa" class="logo">
+    </header>
+    <div class="main-container">
+        <div class="material-container">
+            <h1>Selecione o Material</h1>
+            <div class="material-buttons" id="materialButtons"><button>Adesivo de Papel</button><button>Adesivo de Vinil Laser Brilho</button><button>Adesivo de Vinil Laser Fosco</button><button>Adesivo de Vinil Transparente</button><button>Lona / Banner</button><button>Vinil m²</button><button>Citru m²</button><button>Tecido Oxford</button><button class="selected">Adesivo Jateado</button><button class="">Vinil Automotivo</button></div>
+        </div>
+        <div class="container form-container">
+            <h1>Adesivos / Lona</h1>
+            <div class="measurement-row">
+                <div class="measurement-group">
+                    <label for="quantidade">Quantidade de unidades:</label>
+                    <input type="number" id="quantidade" placeholder="Ex: 100" required="" disabled="">
+                    <p class="info-text">Para materiais por m², quantidade fixa em 1</p>
+                </div>
+            </div>
+            <div class="measurement-row">
+                <div class="measurement-group">
+                    <label for="largura">Largura (cm):</label>
+                    <input type="number" id="largura" placeholder="Ex: 10" required="">
+                </div>
+                <div class="measurement-group">
+                    <label for="altura">Altura (cm):</label>
+                    <input type="number" id="altura" placeholder="Ex: 10" required="">
+                </div>
+            </div>
+            <h2>Tipo de Acabamento</h2>
+            <div class="checkbox-container" id="acabamentoContainer">
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="recorte" onchange="toggleIlhosInput()" checked="">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Recorte</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="0" onchange="toggleIlhosInput()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Sem Acabamento</span>
+                    </label>
+                </div>
+            <div id="ilhos_input">
+                <label for="quantidade_ilhos">Quantidade de Ilhós:</label>
+                <input type="number" id="quantidade_ilhos" placeholder="Ex: 4">
+            </div>
+            <h2>Informações da Arte</h2>
+            <div class="checkbox-container">
+                <label class="checkbox-option">
+                    <input type="radio" name="arte" value="arte_inclusa" onchange="toggleArteValorInput()">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">Arte Exclusiva</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="arte" value="arte_cliente" onchange="toggleArteValorInput()">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">Arte do Cliente</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="arte" value="criacao_arte" onchange="toggleArteValorInput()">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">Contratar Arte</span>
+                </label>
+            </div>
+            <div id="arte_valor_input">
+                <label for="valor_arte">Valor da Criação de Arte (mínimo R$ <span id="arteMinValueLabel">50.00</span>):</label>
+                <input type="number" id="valor_arte" placeholder="Ex: 50" min="50">
+            </div>
+            <h2>Prazo de Produção</h2>
+            <div class="checkbox-container">
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="1" required="">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">1 dia</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="2">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">2 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="3">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">3 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="4">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">4 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="5">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">5 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="6">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">6 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="7">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">7 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="8">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">8 dias</span>
+                </label>
+                <label class="checkbox-option">
+                    <input type="radio" name="prazo_producao" value="9">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">9 dias</span>
+                </label>
+            </div>
+            <button onclick="calcularValor()">Calcular Orçamento</button>
+            <button class="new-budget-btn" onclick="window.location.reload()">Novo Orçamento</button>
+        </div>
+        <div class="result-container">
+            <h1>Resultado</h1>
+            <div class="result" id="resultado"></div>
+            <button class="copy-btn" onclick="copiarResultado(this)">Copiar Orçamento</button>
+        </div>
+    </div>
+    <script>
+        const ADMIN_PASSWORD = "admin123";
+        const DEFAULT_CONFIG = {
+            materials: [
+                { name: 'Adesivo de Papel', price: 60, minValue: 16, maxWidth: Infinity, active: true, blockQuantity: false },
+                { name: 'Adesivo de Vinil Laser Brilho', price: 70, minValue: 20, maxWidth: Infinity, active: true, blockQuantity: false },
+                { name: 'Adesivo de Vinil Laser Fosco', price: 70, minValue: 25, maxWidth: Infinity, active: true, blockQuantity: false },
+                { name: 'Adesivo de Vinil Transparente', price: 70, minValue: 30, maxWidth: Infinity, active: true, blockQuantity: false },
+                { name: 'Lona / Banner', price: 65, minValue: 28, maxWidth: 138, active: true, blockQuantity: true },
+                { name: 'Vinil m²', price: 50, minValue: 32, maxWidth: 139, active: true, blockQuantity: true },
+                { name: 'Citru m²', price: 90, minValue: 65, maxWidth: 141, active: true, blockQuantity: true },
+		{ name: 'Adesivo Jateado', price: 95, minValue: 65, maxWidth: 125, active: true, blockQuantity: true },
+		{ name: 'Vinil Automotivo', price: 120, minValue: 65, maxWidth: 141, active: true, blockQuantity: true },
+                { name: 'Tecido Oxford', price: 30, minValue: 60, maxWidth: 111, active: true, blockQuantity: true }
+            ],
+            finishing: {
+                recorte: 0.003,
+                ilhos: 1.5,
+                bastaoCorda: 10
+            },
+            general: {
+                arteMinValue: 50
+            }
+        };
+
+        let config = JSON.parse(localStorage.getItem('config')) || DEFAULT_CONFIG;
+        let materialSelecionado = { valor: 0, nome: '' };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMaterialButtons();
+            atualizarOpcoesAcabamento();
+            updateArteMinValue();
+        });
+
+        function renderMaterialButtons() {
+            const materialButtons = document.getElementById('materialButtons');
+            materialButtons.innerHTML = '';
+            config.materials.forEach(material => {
+                if (material.active) {
+                    const button = document.createElement('button');
+                    button.textContent = material.name;
+                    button.onclick = () => selecionarMaterial(material.price, material.name);
+                    materialButtons.appendChild(button);
+                }
+            });
+        }
+
+        function selecionarMaterial(valor, nome) {
+            materialSelecionado.valor = valor;
+            materialSelecionado.nome = nome;
+
+            document.querySelectorAll('.material-buttons button').forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            event.target.classList.add('selected');
+
+            const quantidadeInput = document.getElementById('quantidade');
+            const material = config.materials.find(m => m.name === nome);
+            
+            if (material && material.blockQuantity) {
+                quantidadeInput.value = 1;
+                quantidadeInput.disabled = true;
+            } else {
+                quantidadeInput.disabled = false;
+                quantidadeInput.value = '';
+            }
+
+            atualizarOpcoesAcabamento();
+        }
+
+        function validarCampos() {
+            const quantidade = document.getElementById('quantidade').value;
+            const largura = document.getElementById('largura').value;
+            const altura = document.getElementById('altura').value;
+            const acabamento = document.querySelector('input[name="acabamento"]:checked');
+            const arte = document.querySelector('input[name="arte"]:checked');
+            const prazoProducao = document.querySelector('input[name="prazo_producao"]:checked');
+
+            return quantidade && largura && altura && acabamento && arte && prazoProducao;
+        }
+
+        function toggleIlhosInput() {
+            const acabamento = document.querySelector('input[name="acabamento"]:checked')?.value;
+            document.getElementById('ilhos_input').style.display = acabamento === 'ilhós' ? 'block' : 'none';
+        }
+
+        function toggleArteValorInput() {
+            const arte = document.querySelector('input[name="arte"]:checked')?.value;
+            document.getElementById('arte_valor_input').style.display = arte === 'criacao_arte' ? 'block' : 'none';
+        }
+
+        function atualizarOpcoesAcabamento() {
+            const acabamentoContainer = document.getElementById('acabamentoContainer');
+            const material = materialSelecionado.nome;
+
+            acabamentoContainer.innerHTML = '';
+
+            if (material === 'Lona / Banner') {
+                acabamentoContainer.innerHTML = `
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="0" onchange="toggleIlhosInput()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Sem Acabamento</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="bastao_corda" onchange="toggleIlhosInput()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Bastão e Corda</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="ilhós" onchange="toggleIlhosInput()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Ilhós</span>
+                    </label>
+                `;
+            } else {
+                acabamentoContainer.innerHTML = `
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="recorte" onchange="toggleIlhosInput()" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Recorte</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="radio" name="acabamento" value="0" onchange="toggleIlhosInput()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Sem Acabamento</span>
+                    </label>
+                `;
+            }
+        }
+
+        function updateArteMinValue() {
+            const arteInput = document.getElementById('valor_arte');
+            arteInput.min = config.general.arteMinValue;
+            arteInput.placeholder = `Ex: ${config.general.arteMinValue}`;
+            document.getElementById('arteMinValueLabel').textContent = config.general.arteMinValue.toFixed(2);
+        }
+
+        function formatarDimensao(valor) {
+            return parseFloat(valor) === parseInt(valor) ? parseInt(valor) : parseFloat(valor);
+        }
+
+        function getSelectedOptionText(name) {
+            const selected = document.querySelector(`input[name="${name}"]:checked`);
+            if (!selected) return '';
+            const label = selected.closest('.checkbox-option').querySelector('.checkbox-label');
+            return label ? label.textContent : '';
+        }
+
+        function calcularValor() {
+            if (!validarCampos()) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+
+            let quantidade = parseFloat(document.getElementById('quantidade').value);
+            let larguraDigitada = parseFloat(document.getElementById('largura').value);
+            const alturaDigitada = parseFloat(document.getElementById('altura').value);
+            const precoM2 = materialSelecionado.valor;
+            const acabamento = document.querySelector('input[name="acabamento"]:checked').value;
+            const prazoProducao = document.querySelector('input[name="prazo_producao"]:checked').value;
+            const arte = document.querySelector('input[name="arte"]:checked').value;
+            const valorArte = parseFloat(document.getElementById('valor_arte').value) || 0;
+            let valorAcabamento = 0;
+
+            const materialConfig = config.materials.find(m => m.name === materialSelecionado.nome);
+            let larguraMaxima = materialConfig ? materialConfig.maxWidth : Infinity;
+
+            if (larguraDigitada > larguraMaxima) {
+                alert(`A largura máxima para ${materialSelecionado.nome} é ${larguraMaxima} cm. A largura foi ajustada automaticamente.`);
+                larguraDigitada = larguraMaxima;
+                document.getElementById('largura').value = larguraMaxima;
+            }
+
+            const larguraCalculo = (larguraDigitada + 0.4) / 100;
+            const alturaCalculo = (alturaDigitada + 0.4) / 100;
+
+            let quantidadeAjustada = quantidade;
+            const material = config.materials.find(m => m.name === materialSelecionado.nome);
+            
+            if (material && material.blockQuantity) {
+                quantidadeAjustada = 1;
+                document.getElementById('quantidade').value = quantidadeAjustada;
+            }
+
+            if (acabamento === 'recorte') {
+                valorAcabamento = 0;
+                if (materialSelecionado.nome === 'Vinil m²' || materialSelecionado.nome === 'Adesivo de Vinil Transparente') {
+                    valorAcabamento = (quantidadeAjustada * (larguraCalculo * alturaCalculo * precoM2)) * config.finishing.recorte;
+                }
+            } else if (acabamento === 'ilhós') {
+                const quantidadeIlhos = parseInt(document.getElementById('quantidade_ilhos').value) || 0;
+                valorAcabamento = quantidadeIlhos * config.finishing.ilhos;
+            } else if (acabamento === 'bastao_corda') {
+                valorAcabamento = config.finishing.bastaoCorda;
+            }
+
+            const areaTotal = larguraCalculo * alturaCalculo;
+            let valorBase = quantidadeAjustada * (areaTotal * precoM2);
+            let valorTotal = valorBase + (valorAcabamento * quantidadeAjustada);
+            let mensagemValorMinimo = '';
+
+            const minValue = materialConfig ? materialConfig.minValue : 0;
+            if (valorTotal < minValue) {
+                if (material && material.blockQuantity) {
+                    valorTotal = minValue;
+                    mensagemValorMinimo = `Observações: O valor mínimo para este material é R$ ${minValue.toFixed(2)}.`;
+                } else {
+                    quantidadeAjustada = Math.ceil(minValue / (areaTotal * precoM2 + valorAcabamento));
+                    valorTotal = quantidadeAjustada * (areaTotal * precoM2 + valorAcabamento);
+                    mensagemValorMinimo = `Observações: O valor mínimo para este material é R$ ${minValue.toFixed(2)}. A quantidade foi ajustada para ${quantidadeAjustada}.`;
+                }
+                alert(mensagemValorMinimo);
+            }
+
+            if (arte === 'criacao_arte' && valorArte >= config.general.arteMinValue) {
+                valorTotal += valorArte;
+            }
+
+            const prazoTexto = prazoProducao === "1" ? "1 dia útil" : `${prazoProducao} dias úteis`;
+
+            const informacoesAdicionais = `
+                * O orçamento apresentado é válido por 7 dias.<br>
+                * Desenvolvemos a arte para você, consulte condições.<br>
+                * O pagamento deve ser realizado com 50% de adiantamento.<br>
+                * O prazo de produção inicia após aprovação final da arte.<br>
+            `;
+
+            const larguraFormatada = formatarDimensao(larguraDigitada);
+            const alturaFormatada = formatarDimensao(alturaDigitada);
+
+            document.getElementById('resultado').innerHTML = `
+                <strong>Orçamento:</strong><br><br>
+                <strong>Tamanho:</strong> ${larguraFormatada}x${alturaFormatada}cm<br>
+                <strong>Quantidade:</strong> ${quantidadeAjustada}<br>
+                <strong>Material:</strong> ${materialSelecionado.nome}<br>
+                <strong>Acabamento:</strong> ${getSelectedOptionText('acabamento')}<br>
+                ${acabamento === 'ilhós' ? '<strong>Quantidade de Ilhós:</strong> ' + (document.getElementById('quantidade_ilhos').value || 0) + '<br>' : ''}
+                <strong>Arte:</strong> ${getSelectedOptionText('arte')}<br>
+                <strong>Prazo de produção:</strong> ${prazoTexto}.<br>
+                <div class="valor-total">*Valor Total: R$ ${valorTotal.toFixed(2)} ✅*</div>
+                <br>
+                ${mensagemValorMinimo ? `<div class="observacoes"><strong>${mensagemValorMinimo}</strong></div>` : ''}
+                <div class="observacoes">
+                    ${informacoesAdicionais}
+                </div>
+            `;
+        }
+
+        function copiarResultado(button) {
+            const resultado = document.getElementById('resultado').innerText;
+            navigator.clipboard.writeText(resultado)
+                .then(() => {
+                    button.textContent = 'Copiado!';
+                    button.classList.add('copied');
+                    setTimeout(() => {
+                        button.textContent = 'Copiar Orçamento';
+                        button.classList.remove('copied');
+                    }, 2000);
+                })
+                .catch(() => {
+                    button.textContent = 'Erro ao copiar';
+                    setTimeout(() => {
+                        button.textContent = 'Copiar Orçamento';
+                    }, 2000);
+                });
+        }
+
+        function showAdminPanel() {
+            const password = prompt("Digite a senha:");
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('adminOverlay').style.display = 'block';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadMaterialEditor();
+                loadSettingsEditor();
+            } else if (password !== null) {
+                alert('Senha incorreta!');
+            }
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('adminOverlay').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            renderMaterialButtons();
+            updateArteMinValue();
+        }
+
+        function loadMaterialEditor() {
+            const editor = document.getElementById('materialEditor');
+            editor.innerHTML = '';
+            config.materials.forEach((material, index) => {
+                const div = document.createElement('div');
+                div.className = 'material-category';
+                div.innerHTML = `
+                    <h3>${material.name} <button class="delete-btn" onclick="deleteMaterial(${index})">Excluir</button></h3>
+                    <div class="material-item">
+                        <label>Preço por m² (R$):</label>
+                        <input type="number" step="0.01" min="0" value="${material.price.toFixed(2)}" onchange="updateMaterial(${index}, 'price', this.value)">
+                    </div>
+                    <div class="material-item">
+                        <label>Valor Mínimo (R$):</label>
+                        <input type="number" step="0.01" min="0" value="${material.minValue.toFixed(2)}" onchange="updateMaterial(${index}, 'minValue', this.value)">
+                    </div>
+                    <div class="material-item">
+                        <label>Largura Máx. (cm):</label>
+                        <input type="number" min="0" value="${material.maxWidth === Infinity ? '' : material.maxWidth}" placeholder="Infinito" onchange="updateMaterial(${index}, 'maxWidth', this.value)">
+                    </div>
+                    <div class="material-item">
+                        <div class="checkbox-option-admin">
+                            <input type="checkbox" id="active_${index}" ${material.active ? 'checked' : ''} onchange="updateMaterial(${index}, 'active', this.checked)">
+                            <label for="active_${index}">Ativo</label>
+                        </div>
+                        <div class="checkbox-option-admin">
+                            <input type="checkbox" id="block_${index}" ${material.blockQuantity ? 'checked' : ''} onchange="updateMaterial(${index}, 'blockQuantity', this.checked)">
+                            <label for="block_${index}">Bloquear quantidade</label>
+                        </div>
+                    </div>
+                `;
+                editor.appendChild(div);
+            });
+        }
+
+        function loadSettingsEditor() {
+            document.getElementById('recortePrice').value = config.finishing.recorte.toFixed(3);
+            document.getElementById('ilhosPrice').value = config.finishing.ilhos.toFixed(2);
+            document.getElementById('bastaoCordaPrice').value = config.finishing.bastaoCorda.toFixed(2);
+            document.getElementById('arteMinValue').value = config.general.arteMinValue.toFixed(2);
+        }
+
+        function updateMaterial(index, field, value) {
+            if (field === 'active' || field === 'blockQuantity') {
+                config.materials[index][field] = value;
+            } else if (field === 'maxWidth') {
+                config.materials[index][field] = value ? parseFloat(value) : Infinity;
+            } else {
+                config.materials[index][field] = parseFloat(value) || 0;
+            }
+        }
+
+        function deleteMaterial(index) {
+            if (confirm('Tem certeza que deseja excluir este material?')) {
+                config.materials.splice(index, 1);
+                loadMaterialEditor();
+            }
+        }
+
+        function addMaterial() {
+            const name = document.getElementById('newMaterialName').value.trim();
+            const price = parseFloat(document.getElementById('newMaterialPrice').value);
+            const minValue = parseFloat(document.getElementById('newMaterialMinValue').value);
+            const maxWidth = parseFloat(document.getElementById('newMaterialMaxWidth').value) || Infinity;
+            const blockQuantity = document.getElementById('newMaterialBlockQuantity').checked;
+
+            if (name && !isNaN(price) && !isNaN(minValue)) {
+                config.materials.push({ 
+                    name, 
+                    price, 
+                    minValue, 
+                    maxWidth, 
+                    active: true,
+                    blockQuantity 
+                });
+                loadMaterialEditor();
+                document.getElementById('newMaterialName').value = '';
+                document.getElementById('newMaterialPrice').value = '';
+                document.getElementById('newMaterialMinValue').value = '';
+                document.getElementById('newMaterialMaxWidth').value = '';
+                document.getElementById('newMaterialBlockQuantity').checked = false;
+            } else {
+                alert('Preencha todos os campos obrigatórios.');
+            }
+        }
+
+        function saveConfig() {
+            config.finishing.recorte = parseFloat(document.getElementById('recortePrice').value) || config.finishing.recorte;
+            config.finishing.ilhos = parseFloat(document.getElementById('ilhosPrice').value) || config.finishing.ilhos;
+            config.finishing.bastaoCorda = parseFloat(document.getElementById('bastaoCordaPrice').value) || config.finishing.bastaoCorda;
+            config.general.arteMinValue = parseFloat(document.getElementById('arteMinValue').value) || config.general.arteMinValue;
+
+            localStorage.setItem('config', JSON.stringify(config));
+            alert('Configurações salvas!');
+            hideAdminPanel();
+        }
+    </script>
+
+</body></html>
